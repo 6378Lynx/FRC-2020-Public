@@ -28,6 +28,19 @@ public final class Constants {
         public static final int rightEncoderPort = 0;
 
         public static final int gyroPort = 0;
+
+        public static final int trackWidth = 0;
+
+        public static final boolean gyroReversed = false;
+    }
+
+    public static final class OIConstants{
+        public static final int driverControllerPort = 0;
+        public static final int operatorControllerPort = 0;
+    }
+
+    public static final class AutoConstants{
+
     }
 
 }
