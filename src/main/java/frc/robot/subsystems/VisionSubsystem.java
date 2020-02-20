@@ -26,8 +26,8 @@ public class VisionSubsystem extends SubsystemBase {
 
   public VisionSubsystem() {
     table = NetworkTableInstance.getDefault();
-    cameraTable = table.getTable("chameleon-vision").getSubTable(defaultValue);
-    pose = table.getEntry("targetPose").getDoubleArray(pose);
+    cameraTable = table.getTable("chameleon-vision").getSubTable(cameraName);
+    pose = table.getEntry("targetPose").getDoubleArray(defaultValue);
     isDriverMode = cameraTable.getEntry("driver_mode");
   }
 
