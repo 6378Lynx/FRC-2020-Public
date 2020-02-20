@@ -11,10 +11,15 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class VisionSubsystem extends SubsystemBase {
   private double[] pose;
   private NetworkTableEntry isDriverMode;
+  public Joystick joystick;
+ 
+  
   double[] defaultValue = new double[0];
   private NetworkTableInstance table;
   private NetworkTable cameraTable;
@@ -25,6 +30,7 @@ public class VisionSubsystem extends SubsystemBase {
   
 
   public VisionSubsystem() {
+    joystick = new Joystick(1);
     table = NetworkTableInstance.getDefault();
     cameraTable = table.getTable("chameleon-vision").getSubTable(cameraName);
     pose = table.getEntry("targetPose").getDoubleArray(defaultValue);
@@ -36,6 +42,10 @@ public class VisionSubsystem extends SubsystemBase {
     curr_X_Distance = pose[0];
     curr_Y_Distance = pose[1];
     curr_angle_offset = pose[2];
+    isDriverMode.setBoolean(joystick.getRawButton(0));
+    SmartDashboard.putNumber("X offset", curr_X_Distance);
+    SmartDashboard.putNumber("Y offset", curr_Y_Distance);
+    SmartDashboard.putNumber("Angle offset", curr_angle_offset);
   }
 
 
