@@ -13,6 +13,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import java.lang.Math;
 
 public class VisionSubsystem extends SubsystemBase {
   private double[] pose;
@@ -27,18 +28,23 @@ public class VisionSubsystem extends SubsystemBase {
   double curr_X_Distance;
   double curr_Y_Distance;
   double curr_angle_offset;
+
+  double camera_distance = 0.5; //m
+  double hypot_offset = 0.0;
+  double latency;
   
 
   public VisionSubsystem() {
     joystick = new Joystick(1);
     table = NetworkTableInstance.getDefault();
     cameraTable = table.getTable("chameleon-vision").getSubTable(cameraName);
-    pose = table.getEntry("targetPose").getDoubleArray(defaultValue);
     isDriverMode = cameraTable.getEntry("driver_mode");
   }
 
   @Override
   public void periodic() {
+    pose = table.getEntry("targetPose").getDoubleArray(defaultValue);
+    latency = cameraTable.getEntry("latency").getDouble(0.0);
     curr_X_Distance = pose[0];
     curr_Y_Distance = pose[1];
     curr_angle_offset = pose[2];
@@ -46,6 +52,7 @@ public class VisionSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("X offset", curr_X_Distance);
     SmartDashboard.putNumber("Y offset", curr_Y_Distance);
     SmartDashboard.putNumber("Angle offset", curr_angle_offset);
+    SmartDashboard.putNumber("Latency ", latency);
   }
 
 
@@ -60,5 +67,10 @@ public class VisionSubsystem extends SubsystemBase {
   public double angle_offset(){
     return curr_angle_offset;
   }
+
+  public double distance_hypotensuse(){
+    return Math.hypot(curr_X_Distance, curr_Y_Distance) - camera_distance - hypot_offset;
+  }
+
 
 }
