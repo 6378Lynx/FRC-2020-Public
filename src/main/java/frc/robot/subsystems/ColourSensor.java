@@ -8,7 +8,6 @@
 package frc.robot.subsystems;
 
 
-import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
@@ -90,7 +89,7 @@ public class ColourSensor extends SubsystemBase {
   }
 
 
-  public static String getColor(){
+  public String getColor(){
     return colorString;
   }
 

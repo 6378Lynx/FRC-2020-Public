@@ -32,6 +32,8 @@ public final class Constants {
         public static final int trackWidth = 0;
 
         public static final boolean gyroReversed = false;
+
+        public static final int redLineMotorPort = 0;
     }
 
     public static final class OIConstants{
