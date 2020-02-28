@@ -54,6 +54,21 @@ public class ColourSensorCommand extends CommandBase {
     }
   }
 
+  public void rotateWheel(int rotations){
+    int currRotations = 0;
+    String lastColour = currentColour;
+    /*We use (rotations * 8) because every 8 colour changes indicates 1 rotation of the control panel
+    * Then we subtract one because the n - 1 colour change means we are on the same colour we started with
+    */
+    while(currRotations != (rotations * 8) - 1){
+      //Rotate wheel
+      if(!currentColour.equals(lastColour)){
+        lastColour = currentColour;
+        currRotations++;
+      }
+    }
+  }
+
   
 
   // Called every time the scheduler runs while the command is scheduled.
