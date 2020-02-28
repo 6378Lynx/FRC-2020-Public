@@ -10,6 +10,7 @@ package frc.robot.commands;
 import frc.robot.subsystems.ColourSensor;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 import edu.wpi.first.wpilibj.DriverStation;
@@ -26,8 +27,7 @@ public class ColourSensorCommand extends CommandBase {
   private final ColourSensor m_subsystem;
   private String gameData;
   private String currentColour;
-  private WPI_VictorSPX controlPanelMotor;
-  DifferentialDrive drive;
+  private VictorSPX controlPanelMotor;
 
   /**
    * Creates a new ExampleCommand.
@@ -37,9 +37,7 @@ public class ColourSensorCommand extends CommandBase {
   public ColourSensorCommand(ColourSensor subsystem) {
     m_subsystem = subsystem;
     // Use addRequirements() here to declare subsystem dependencies.
-    controlPanelMotor = new WPI_VictorSPX(DriveConstants.redLineMotorPort);
-    controlPanelMotor.set(ControlMode.PercentOutput, 0);
-    drive = new DifferentialDrive(controlPanelMotor, controlPanelMotor);
+    controlPanelMotor = new VictorSPX(DriveConstants.redLineMotorPort);
     addRequirements(subsystem);
   }
 
@@ -51,7 +49,7 @@ public class ColourSensorCommand extends CommandBase {
 
   public void rotateToColour(String targetColour){
     while(!currentColour.equals(targetColour)){
-      drive.arcadeDrive(0.1, 0);
+
       currentColour = m_subsystem.getColor();
     }
   }
