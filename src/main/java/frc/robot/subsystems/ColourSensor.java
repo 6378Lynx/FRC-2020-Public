@@ -28,6 +28,8 @@ public class ColourSensor extends SubsystemBase {
   private final Color green;
   private final Color red;
   private final Color yellow;
+  private Color detectedColor;
+  private ColorMatchResult match;
 
   public static String colorString;
 
@@ -44,6 +46,9 @@ public class ColourSensor extends SubsystemBase {
     m_colorMatcher.addColorMatch(green);
     m_colorMatcher.addColorMatch(red);
     m_colorMatcher.addColorMatch(yellow);
+
+    detectedColor =  m_colorSensor.getColor();
+    match = m_colorMatcher.matchClosestColor(detectedColor);
   }
 
   @Override
@@ -58,12 +63,12 @@ public class ColourSensor extends SubsystemBase {
      * an object is the more light from the surroundings will bleed into the 
      * measurements and make it difficult to accurately determine its color.
      */
-    Color detectedColor = m_colorSensor.getColor();
+    detectedColor = m_colorSensor.getColor();
 
     /**
      * Run the color match algorithm on our detected color
      */
-    ColorMatchResult match = m_colorMatcher.matchClosestColor(detectedColor);
+    match = m_colorMatcher.matchClosestColor(detectedColor);
 
     if (match.color == blue) {
       colorString = "Blue";
@@ -88,7 +93,7 @@ public class ColourSensor extends SubsystemBase {
     SmartDashboard.putString("Detected Color", colorString);
   }
 
-
+  
   public String getColor(){
     return colorString;
   }

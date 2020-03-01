@@ -9,15 +9,9 @@ package frc.robot.commands;
 
 import frc.robot.subsystems.ColourSensor;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.VictorSPX;
-import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
-import frc.robot.Constants.DriveConstants;
 
 /**
  * An example command that uses an example subsystem.
@@ -27,7 +21,6 @@ public class ColourSensorCommand extends CommandBase {
   private final ColourSensor m_subsystem;
   private String gameData;
   private String currentColour;
-  private VictorSPX controlPanelMotor;
 
   /**
    * Creates a new ExampleCommand.
@@ -37,14 +30,13 @@ public class ColourSensorCommand extends CommandBase {
   public ColourSensorCommand(ColourSensor subsystem) {
     m_subsystem = subsystem;
     // Use addRequirements() here to declare subsystem dependencies.
-    controlPanelMotor = new VictorSPX(DriveConstants.redLineMotorPort);
     addRequirements(subsystem);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    gameData = DriverStation.getInstance().getGameSpecificMessage();
+
   }
 
   public void rotateToColour(String targetColour){
@@ -57,10 +49,8 @@ public class ColourSensorCommand extends CommandBase {
   public void rotateWheel(int rotations){
     int currRotations = 0;
     String lastColour = currentColour;
-    /*We use (rotations * 8) because every 8 colour changes indicates 1 rotation of the control panel
-    * Then we subtract one because the n - 1 colour change means we are on the same colour we started with
-    */
-    while(currRotations != (rotations * 8) - 1){
+    //Every 8 colour changes indicates 1 rotation so for n rotations we would need n*7 colour changes
+    while(currRotations != (rotations * 8)){
       //Rotate wheel
       if(!currentColour.equals(lastColour)){
         lastColour = currentColour;
@@ -70,15 +60,12 @@ public class ColourSensorCommand extends CommandBase {
   }
 
   
-
-  // Called every time the scheduler runs while the command is scheduled.
-  @Override
-  public void execute() {
+  public void positionControl(){
     currentColour = m_subsystem.getColor();
+    gameData = DriverStation.getInstance().getGameSpecificMessage();
     if(gameData.length() > 0)
     {
-      switch (gameData.charAt(0))
-      {
+      switch (gameData.charAt(0)){
         case 'B' :
           if(currentColour.equals("Blue")){
 
@@ -113,6 +100,15 @@ public class ColourSensorCommand extends CommandBase {
       }
     } else {
       //Code for no data received yet
+    }
+  }
+  // Called every time the scheduler runs while the command is scheduled.
+  @Override
+  public void execute() { 
+    if(DriverStation.getInstance().getGameSpecificMessage().length() > 0){
+      positionControl();
+    }else{
+      rotateWheel(4);
     }
 
   }
