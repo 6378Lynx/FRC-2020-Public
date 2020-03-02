@@ -8,20 +8,18 @@
 package frc.robot.commands;
 
 import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.subsystems.VisionSubsystem;
 
 public class VisionCommand extends CommandBase {
   /**
    * Creates a new VisionCommand.
    */
   private double[] pose;
-  private NetworkTableEntry isDriverMode;
+  private DriveSubsystem drive;
   public Joystick joystick;
  
   
@@ -36,8 +34,9 @@ public class VisionCommand extends CommandBase {
   double camera_distance = 0.5; //m
   double hypot_offset = 0.0;
   double latency;
-  public VisionCommand(DriveSubsystem visionSubsystem) {
+  public VisionCommand(DriveSubsystem driveSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
+    drive = driveSubsystem;
   }
 
   // Called when the command is initially scheduled.
@@ -46,7 +45,6 @@ public class VisionCommand extends CommandBase {
     joystick = new Joystick(1);
     table = NetworkTableInstance.getDefault();
     cameraTable = table.getTable("chameleon-vision").getSubTable(cameraName);
-    isDriverMode = cameraTable.getEntry("driver_mode");
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -57,11 +55,15 @@ public class VisionCommand extends CommandBase {
     curr_X_Distance = pose[0];
     curr_Y_Distance = pose[1];
     curr_angle_offset = pose[2];
-    isDriverMode.setBoolean(joystick.getRawButton(0));
+    if(joystick.getRawButton(0)){
+      driveRobot();
+    }
     SmartDashboard.putNumber("X offset", curr_X_Distance);
     SmartDashboard.putNumber("Y offset", curr_Y_Distance);
     SmartDashboard.putNumber("Angle offset", curr_angle_offset);
     SmartDashboard.putNumber("Latency ", latency);
+
+
   }
 
   // Called once the command ends or is interrupted.
@@ -90,6 +92,11 @@ public class VisionCommand extends CommandBase {
 
   public double distance_hypotensuse(){
     return Math.hypot(curr_X_Distance, curr_Y_Distance) - camera_distance - hypot_offset;
+  }
+
+  public void driveRobot(){
+    drive.arcadeDrive(distance_hypotensuse(), 0);
+    drive.arcadeDrive(0, angle_offset());
   }
 
 }
