@@ -104,9 +104,9 @@ public class ColourSensor extends SubsystemBase {
   public void rotateWheel(int rotations){
     int currRotations = 0;
     String lastColour = colorString;
-    //Every 8 colour changes indicates 1 rotation so for n rotations we would need n*7 colour changes
+    //Every 8 colour changes indicates 1 rotation so for n rotations we would need n*8 colour changes
+    victorSPX.set(0.1);
     while(currRotations != (rotations * 8)){
-      victorSPX.set(0.1);
       if(!colorString.equals(lastColour)){
         lastColour = colorString;
         currRotations++;
