@@ -138,11 +138,11 @@ public class ColourSensor extends SubsystemBase {
           }
           break;
         case 'R' :
-        if(colorString.equals("Red")){
+          if(colorString.equals("Red")){
 
-        }else{
-          rotateToColour("Red");
-        }
+          }else{
+            rotateToColour("Red");
+          }
           break;
         case 'Y' :
           if(colorString.equals("Yellow")){
