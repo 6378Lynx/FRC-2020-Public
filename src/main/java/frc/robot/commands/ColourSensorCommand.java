@@ -19,8 +19,6 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 public class ColourSensorCommand extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final ColourSensor m_subsystem;
-  private String gameData;
-  private String currentColour;
 
   /**
    * Creates a new ExampleCommand.
@@ -39,76 +37,14 @@ public class ColourSensorCommand extends CommandBase {
 
   }
 
-  public void rotateToColour(String targetColour){
-    while(!currentColour.equals(targetColour)){
-
-      currentColour = m_subsystem.getColor();
-    }
-  }
-
-  public void rotateWheel(int rotations){
-    int currRotations = 0;
-    String lastColour = currentColour;
-    //Every 8 colour changes indicates 1 rotation so for n rotations we would need n*7 colour changes
-    while(currRotations != (rotations * 8)){
-      //Rotate wheel
-      if(!currentColour.equals(lastColour)){
-        lastColour = currentColour;
-        currRotations++;
-      }
-    }
-  }
-
   
-  public void positionControl(){
-    currentColour = m_subsystem.getColor();
-    gameData = DriverStation.getInstance().getGameSpecificMessage();
-    if(gameData.length() > 0)
-    {
-      switch (gameData.charAt(0)){
-        case 'B' :
-          if(currentColour.equals("Blue")){
-
-          }else{
-            rotateToColour("Blue");
-          }
-          break;
-        case 'G' :
-          if(currentColour.equals("Green")){
-
-          }else{
-            rotateToColour("Green");
-          }
-          break;
-        case 'R' :
-        if(currentColour.equals("Red")){
-
-        }else{
-          rotateToColour("Red");
-        }
-          break;
-        case 'Y' :
-          if(currentColour.equals("Yellow")){
-
-          }else{
-            rotateToColour("Yellow");
-          }
-          break;
-        default :
-          //This is corrupt data
-          break;
-      }
-    } else {
-      //Code for no data received yet
-    }
-  }
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() { 
     if(DriverStation.getInstance().getGameSpecificMessage().length() > 0){
-      positionControl();
+      m_subsystem.positionControl();
     }else{
-      rotateWheel(4);
+      m_subsystem.rotateWheel(4);
     }
 
   }

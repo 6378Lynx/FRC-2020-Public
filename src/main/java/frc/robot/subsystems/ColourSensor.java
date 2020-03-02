@@ -7,7 +7,7 @@
 
 package frc.robot.subsystems;
 
-
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
@@ -30,7 +30,6 @@ public class ColourSensor extends SubsystemBase {
   private final Color yellow;
   private Color detectedColor;
   private ColorMatchResult match;
-
   public static String colorString;
 
   public ColourSensor() {
@@ -98,6 +97,68 @@ public class ColourSensor extends SubsystemBase {
     return colorString;
   }
 
+  public void rotateWheel(int rotations){
+    int currRotations = 0;
+    String lastColour = colorString;
+    //Every 8 colour changes indicates 1 rotation so for n rotations we would need n*7 colour changes
+    while(currRotations != (rotations * 8)){
+      //Rotate wheel
+      if(!colorString.equals(lastColour)){
+        lastColour = colorString;
+        currRotations++;
+      }
+    }
+  }
+
+  public void rotateToColour(String targetColour){
+    while(!colorString.equals(targetColour)){
+
+      colorString = getColor();
+    }
+  }
+
+  public void positionControl(){
+    colorString = getColor();
+    String gameData = DriverStation.getInstance().getGameSpecificMessage();
+    if(gameData.length() > 0)
+    {
+      switch (gameData.charAt(0)){
+        case 'B' :
+          if(colorString.equals("Blue")){
+
+          }else{
+            rotateToColour("Blue");
+          }
+          break;
+        case 'G' :
+          if(colorString.equals("Green")){
+
+          }else{
+            rotateToColour("Green");
+          }
+          break;
+        case 'R' :
+        if(colorString.equals("Red")){
+
+        }else{
+          rotateToColour("Red");
+        }
+          break;
+        case 'Y' :
+          if(colorString.equals("Yellow")){
+
+          }else{
+            rotateToColour("Yellow");
+          }
+          break;
+        default :
+          //This is corrupt data
+          break;
+      }
+    } else {
+      //Code for no data received yet
+    }
+  }
 
 
 }
