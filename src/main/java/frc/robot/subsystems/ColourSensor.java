@@ -16,12 +16,15 @@ import com.revrobotics.ColorSensorV3;
 import com.revrobotics.ColorMatchResult;
 import com.revrobotics.ColorMatch;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj.PWMVictorSPX;
+import static frc.robot.Constants.DriveConstants;
 
 public class ColourSensor extends SubsystemBase {
   /**
    * Creates a new ColourSensor.
    */
   private final I2C.Port i2cPort;
+  private final PWMVictorSPX victorSPX;
   private final ColorSensorV3 m_colorSensor;
   private final ColorMatch m_colorMatcher;
   private final Color blue;
@@ -34,6 +37,7 @@ public class ColourSensor extends SubsystemBase {
 
   public ColourSensor() {
     i2cPort = I2C.Port.kOnboard;
+    victorSPX = new PWMVictorSPX(DriveConstants.redLineMotorPort);
     m_colorSensor = new ColorSensorV3(i2cPort);
     m_colorMatcher = new ColorMatch();
     blue = ColorMatch.makeColor(0.143, 0.427, 0.429);
@@ -102,19 +106,21 @@ public class ColourSensor extends SubsystemBase {
     String lastColour = colorString;
     //Every 8 colour changes indicates 1 rotation so for n rotations we would need n*7 colour changes
     while(currRotations != (rotations * 8)){
-      //Rotate wheel
+      victorSPX.set(0.1);
       if(!colorString.equals(lastColour)){
         lastColour = colorString;
         currRotations++;
       }
     }
+    victorSPX.set(0.0);
   }
 
   public void rotateToColour(String targetColour){
+    victorSPX.set(0.1);
     while(!colorString.equals(targetColour)){
-
       colorString = getColor();
     }
+    victorSPX.set(0.0);
   }
 
   public void positionControl(){
@@ -124,30 +130,22 @@ public class ColourSensor extends SubsystemBase {
     {
       switch (gameData.charAt(0)){
         case 'B' :
-          if(colorString.equals("Blue")){
-
-          }else{
+          if(!colorString.equals("Blue")){
             rotateToColour("Blue");
           }
           break;
         case 'G' :
-          if(colorString.equals("Green")){
-
-          }else{
+          if(!colorString.equals("Green")){
             rotateToColour("Green");
           }
           break;
         case 'R' :
-          if(colorString.equals("Red")){
-
-          }else{
+          if(!colorString.equals("Red")){
             rotateToColour("Red");
           }
           break;
         case 'Y' :
-          if(colorString.equals("Yellow")){
-
-          }else{
+          if(!colorString.equals("Yellow")){
             rotateToColour("Yellow");
           }
           break;
