@@ -19,23 +19,23 @@ public final class Constants {
 
     public static final class DriveConstants{
         public static final int leftMotor1Port = 0;
-        public static final int leftMotor2Port = 0;
+        public static final int leftMotor2Port = 1;
 
-        public static final int rightMotor1Port = 0;
-        public static final int rightMotor2Port = 0;
+        public static final int rightMotor1Port = 2;
+        public static final int rightMotor2Port = 3;
 
-        public static final int leftEncoderPort = 0;
-        public static final int rightEncoderPort = 0;
+        public static final int leftEncoderPort = 4;
+        public static final int rightEncoderPort = 5;
 
-        public static final int gyroPort = 0;
+        public static final int gyroPort = 6;
 
-        public static final int trackWidth = 0;
+        public static final int trackWidth = 7;
 
         public static final boolean gyroReversed = false;
     }
 
     public static final class OIConstants{
-        public static final int driverControllerPort = 0;
+        public static final int driverControllerPort = 1;
         public static final int operatorControllerPort = 0;
     }
 

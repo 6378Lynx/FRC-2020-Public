@@ -8,8 +8,11 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.VisionCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
@@ -25,14 +28,15 @@ import edu.wpi.first.wpilibj2.command.Command;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final VisionSubsystem m_exampleSubsystem = new VisionSubsystem();
-  private final DriveSubsystem drive = new DriveSubsystem();
+  //private final DriveSubsystem drive = new DriveSubsystem();
 
-  private final VisionCommand m_autoCommand = new VisionCommand(drive);
+  private final VisionCommand visionCommand = new VisionCommand(new VisionSubsystem());
 
   //private final DriveSubsystem robotDrive = new DriveSubsystem();
-  //XboxController controller = new XboxController(Constants.OIConstants.driverControllerPort);
-
+  XboxController controller = new XboxController(Constants.OIConstants.driverControllerPort);
+  Joystick controllerJoystick = new Joystick(Constants.OIConstants.driverControllerPort);
+  JoystickButton aButton = new JoystickButton(controllerJoystick, 2);
+  
 
 
   /**
@@ -61,6 +65,7 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+    aButton.whenPressed(new VisionCommand(new VisionSubsystem()));
 
   }
 
@@ -72,6 +77,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return m_autoCommand;
+    return visionCommand;
   }
 }
