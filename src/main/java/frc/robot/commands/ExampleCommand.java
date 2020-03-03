@@ -25,6 +25,7 @@ public class ExampleCommand extends CommandBase {
    */
   public ExampleCommand(VisionSubsystem subsystem) {
     m_subsystem = subsystem;
+  public ExampleCommand(ExampleSubsystem subsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
   }
