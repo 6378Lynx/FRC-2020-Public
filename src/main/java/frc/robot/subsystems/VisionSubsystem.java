@@ -21,10 +21,10 @@ public class VisionSubsystem extends SubsystemBase {
   public Joystick joystick;
  
   
-  double[] defaultValue = new double[0];
+  double[] defaultValue = new double[3];
   private NetworkTableInstance table;
   private NetworkTable cameraTable;
-  private String cameraName = "";
+  private String cameraName = "Logitech";
   double curr_X_Distance;
   double curr_Y_Distance;
   double curr_angle_offset;
@@ -43,12 +43,14 @@ public class VisionSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    pose = table.getEntry("targetPose").getDoubleArray(defaultValue);
+    System.out.println(cameraTable.getEntry("driver_mode").getType());
+    pose = cameraTable.getEntry("targetPose").getDoubleArray(defaultValue);
     latency = cameraTable.getEntry("latency").getDouble(0.0);
     curr_X_Distance = pose[0];
     curr_Y_Distance = pose[1];
     curr_angle_offset = pose[2];
     isDriverMode.setBoolean(joystick.getRawButton(0));
+    //System.out.println(curr_X_Distance);
     SmartDashboard.putNumber("X offset", curr_X_Distance);
     SmartDashboard.putNumber("Y offset", curr_Y_Distance);
     SmartDashboard.putNumber("Angle offset", curr_angle_offset);

@@ -13,22 +13,24 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.VisionSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /**
- * This class is where the bulk of the robot should be declared.  Since Command-based is a
- * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
- * periodic methods (other than the scheduler calls).  Instead, the structure of the robot
- * (including subsystems, commands, and button mappings) should be declared here.
+ * This class is where the bulk of the robot should be declared. Since
+ * Command-based is a "declarative" paradigm, very little robot logic should
+ * actually be handled in the {@link Robot} periodic methods (other than the
+ * scheduler calls). Instead, the structure of the robot (including subsystems,
+ * commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
+  private final VisionSubsystem m_exampleSubsystem = new VisionSubsystem();
 
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
 
-  private final DriveSubsystem robotDrive = new DriveSubsystem();
-  XboxController controller = new XboxController(Constants.OIConstants.driverControllerPort);
+  //private final DriveSubsystem robotDrive = new DriveSubsystem();
+  //XboxController controller = new XboxController(Constants.OIConstants.driverControllerPort);
 
 
 
@@ -39,6 +41,7 @@ public class RobotContainer {
     // Configure the button bindings
     configureButtonBindings();
 
+    /*
     robotDrive.setDefaultCommand(
             new RunCommand(
                     () -> robotDrive.arcadeDrive(controller.getY(GenericHID.Hand.kLeft), controller.getX(GenericHID.Hand.kRight)),
@@ -46,6 +49,7 @@ public class RobotContainer {
             )
     );
 
+    */
 
   }
 

@@ -94,6 +94,17 @@ public class ColourSensor extends SubsystemBase {
   }
 
   public void rotateWheel(String targetColor){
+    if(targetColor == "Red"){
+      
+    }
+
+    else if(targetColor == "Green"){
+
+    }
+
+    else{
+      
+    }
 
   }
 
