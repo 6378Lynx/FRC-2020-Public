@@ -33,7 +33,6 @@ public class DriveSubsystem extends SubsystemBase {
 
     DifferentialDrive drive = new DifferentialDrive(leftTalon, rightTalon);
 
-
     public DriveSubsystem(){
         leftTalon = new WPI_TalonSRX(DriveConstants.leftMotor1Port);
         leftVictor = new WPI_VictorSPX(DriveConstants.leftMotor2Port);
@@ -57,9 +56,15 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
 
-    public void arcadeDrive(double fwd, double rot){
-        drive.arcadeDrive(fwd,rot);
+    public void curvatureDrive(double fwd, double rot, boolean quickTurn){
+        drive.curvatureDrive(fwd, rot, quickTurn);
     }
+
+    public void setVoltage(double left, double right){
+        leftTalon.setVoltage(left);
+        rightTalon.setVoltage(right);
+    }
+
 
     @Override
     public void periodic(){
