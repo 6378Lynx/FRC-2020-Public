@@ -20,7 +20,6 @@ public class VisionSubsystem extends SubsystemBase {
     /**
    * Creates a new VisionCommand.
    */
-  private double[] pose;
   private DriveSubsystem drive;
   public Joystick joystick;
  
@@ -30,8 +29,10 @@ public class VisionSubsystem extends SubsystemBase {
   private NetworkTable cameraTable;
   private String cameraName = "Logitech";
   double curr_X_Distance;
-  double curr_Y_Distance;
   double curr_angle_offset;
+  double distance;
+  double area_at_1_meter;
+  double currArea;
 
   double camera_distance = 0.5; //m
   double hypot_offset = 0.0;
@@ -44,19 +45,16 @@ public class VisionSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    pose = cameraTable.getEntry("targetPose").getDoubleArray(defaultValue);
     latency = cameraTable.getEntry("latency").getDouble(0.0);
-    curr_X_Distance = pose[0];
-    curr_Y_Distance = pose[1];
-    curr_angle_offset = pose[2];
+    curr_angle_offset = cameraTable.getEntry("targetYaw").getDouble(0.0);
+    currArea = cameraTable.getEntry("targetArea").getDouble(0.0); 
+    distance = 1 / (currArea * (1 / area_at_1_meter));
     //System.out.println(curr_X_Distance);
     if(joystick.getRawButton(0)){
       driveRobot();
     }
-    SmartDashboard.putNumber("X offset", curr_X_Distance);
-    SmartDashboard.putNumber("Y offset", curr_Y_Distance);
+    SmartDashboard.putNumber("X offset", distance);
     SmartDashboard.putNumber("Angle offset", curr_angle_offset);
-    System.out.println();
     SmartDashboard.putNumber("Latency ", latency);
 
   }
@@ -65,20 +63,11 @@ public class VisionSubsystem extends SubsystemBase {
     return curr_X_Distance;
   }
 
-  public double y_offset(){
-    return curr_Y_Distance;
-  }
-
   public double angle_offset(){
     return curr_angle_offset;
   }
 
-  public double distance_hypotensuse(){
-    return Math.hypot(curr_X_Distance, curr_Y_Distance) - camera_distance - hypot_offset;
-  }
 
   public void driveRobot(){
-    drive.arcadeDrive(distance_hypotensuse(), 0);
-    drive.arcadeDrive(0, angle_offset());
   }
 }
