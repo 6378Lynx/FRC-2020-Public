@@ -16,29 +16,36 @@ import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 
 public class VisionCommand extends CommandBase {
-  private VisionSubsystem visionSubsystem;
-
+  /**
+   * Creates a new VisionCommand.
+   */
+  private DriveSubsystem drive;
+  private VisionSubsystem vision;
+  public Joystick joystick;
+  double distanceOffset;
+  double angleOffset;
+  
+ 
+  
   public VisionCommand(VisionSubsystem visionSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
     //drive = driveSubsystem;
-    this.visionSubsystem = visionSubsystem;
-    addRequirements(visionSubsystem);
+    vision = visionSubsystem;
   }
 
-
-// Called when the command is initially scheduled.
+  // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-
   }
 
   // Called every time the scheduler runs while the command is scheduled.
-  
-
-
+  @Override
   public void execute() {
-
-
+    vision.setDriverMode(true);
+    distanceOffset = vision.x_offset();
+    angleOffset = vision.angle_offset();
+    //Drive code here
+    vision.setDriverMode(false);
 
   }
 
@@ -54,6 +61,5 @@ public class VisionCommand extends CommandBase {
   }
 
   
-
 
 }

@@ -8,6 +8,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.Joystick;
@@ -17,16 +18,13 @@ public class VisionSubsystem extends SubsystemBase {
   /**
    * Creates a new VisionSubsystem.
    */
-    /**
-   * Creates a new VisionCommand.
-   */
-  private DriveSubsystem drive;
   public Joystick joystick;
  
   
   double[] defaultValue = new double[3];
   private NetworkTableInstance table;
   private NetworkTable cameraTable;
+  public NetworkTableEntry isDriverMode;
   private String cameraName = "Logitech";
   double curr_X_Distance;
   double curr_angle_offset;
@@ -41,6 +39,7 @@ public class VisionSubsystem extends SubsystemBase {
     joystick = new Joystick(1);
     table = NetworkTableInstance.getDefault();
     cameraTable = table.getTable("chameleon-vision").getSubTable(cameraName);
+    isDriverMode = cameraTable.getEntry("driver_mode");
   }
 
   @Override
@@ -50,9 +49,6 @@ public class VisionSubsystem extends SubsystemBase {
     currArea = cameraTable.getEntry("targetArea").getDouble(0.0); 
     distance = 1 / (currArea * (1 / area_at_1_meter));
     //System.out.println(curr_X_Distance);
-    if(joystick.getRawButton(0)){
-      driveRobot();
-    }
     SmartDashboard.putNumber("X offset", distance);
     SmartDashboard.putNumber("Angle offset", curr_angle_offset);
     SmartDashboard.putNumber("Latency ", latency);
@@ -67,7 +63,7 @@ public class VisionSubsystem extends SubsystemBase {
     return curr_angle_offset;
   }
 
-
-  public void driveRobot(){
+  public void setDriverMode(boolean toggle){
+    isDriverMode.setBoolean(toggle);
   }
 }
