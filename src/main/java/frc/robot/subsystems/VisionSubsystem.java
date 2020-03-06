@@ -47,7 +47,7 @@ public class VisionSubsystem extends SubsystemBase {
     latency = cameraTable.getEntry("latency").getDouble(0.0);
     curr_angle_offset = cameraTable.getEntry("targetYaw").getDouble(0.0);
     currArea = cameraTable.getEntry("targetArea").getDouble(0.0); 
-    distance = 1 / (currArea * (1 / area_at_1_meter));
+    distance = 1 / (currArea * ((double)1 / (double)area_at_1_meter));
     //System.out.println(curr_X_Distance);
     SmartDashboard.putNumber("X offset", distance);
     SmartDashboard.putNumber("Angle offset", curr_angle_offset);
