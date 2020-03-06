@@ -24,7 +24,36 @@ public class VisionCommand extends CommandBase {
   public Joystick joystick;
   double distanceOffset;
   double angleOffset;
-  
+  //Error values for the control loop
+  double rotationError;
+  double distanceError;
+
+  //Control loop constants
+  /*
+      This example uses proportional control loop with constant force
+      After you master proportional control use might want to try PID control loop
+  */
+  double KpRot=-0.1;
+  double KpDist=-0.1;
+
+  //Deadzone is necessary because the robot can only get so accurate and cannot be pefectly head on the target
+  double angleTolerance=5;//Deadzone for the angle control loop
+  double distanceTolerance=5;//Deadzone for the distance control loop
+
+  /*
+  There is a minimum power that you need to give to the drivetrain in order to overcome friction
+  It helps the robot move and rotate at low speeds
+  */
+  double constantForce=0.05;
+
+  /*
+  rotationAjust is rotational signal for the drivetrain
+  distanceAjust is forward signal for the drivetrain
+  */
+  double rotationAjust;
+  double distanceAjust;
+
+
  
   
   public VisionCommand(VisionSubsystem visionSubsystem) {
@@ -60,6 +89,44 @@ public class VisionCommand extends CommandBase {
     return false;
   }
 
+  public void drive(double rotationError, double distanceError, boolean buttonDown){
+      rotationAjust=0;
+      distanceAjust=0;
+      if (buttonDown)//the "A" button
+      {
+          /*
+              Fetches the rotation and distance values from the vision co processor
+              sets the value to 0.0 if the value doesnt exist in the database
+          */
+          this.rotationError=rotationError;
+          this.distanceError=distanceError;
+
+          /*
+              Proportional (to targetX) control loop for rotation
+              Deadzone of angleTolerance
+              Constant power is added to the direction the control loop wants to turn (to overcome friction)
+          */
+          if(rotationError>angleTolerance)
+              rotationAjust=KpRot*rotationError+constantForce;
+          else
+              if(rotationError<angleTolerance)
+                  rotationAjust=KpRot*rotationError-constantForce;
+          /*
+              Proportional (to targetY) control loop for distance
+              Deadzone of distanceTolerance
+              Constant power is added to the direction the control loop wants to turn (to overcome friction)
+          */
+          if(distanceError>distanceTolerance)
+              distanceAjust=KpDist*distanceError+constantForce;
+          else
+              if(distanceError<distanceTolerance)
+                  distanceAjust=KpDist*distanceError-constantForce;
+
+
+          //Output the power signals to a arcade drivetrain
+          //m_drive.arcadeDrive(distanceAjust,rotationAjust);
+      }
+    }
   
 
 }
