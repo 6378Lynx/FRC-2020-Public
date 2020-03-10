@@ -60,6 +60,10 @@ public class DriveSubsystem extends SubsystemBase {
         drive.curvatureDrive(fwd, rot, quickTurn);
     }
 
+    public void arcadeDrive(double fwd, double rot){
+        drive.arcadeDrive(fwd, rot);
+    }
+
     public void setVoltage(double left, double right){
         leftTalon.setVoltage(left);
         rightTalon.setVoltage(right);

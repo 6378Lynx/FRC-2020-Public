@@ -25,8 +25,10 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.control.Spin;
+import frc.robot.commands.control.VisionCommand;
 import frc.robot.subsystems.ColorSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.VisionSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 
 import java.util.List;
@@ -42,6 +44,7 @@ public class RobotContainer {
 
   private final DriveSubsystem robotDrive = new DriveSubsystem();
   private final ColorSubsystem colorSubsystem = new ColorSubsystem();
+  private final VisionSubsystem visionSubsystem =  new VisionSubsystem();
   XboxController xboxController = new XboxController(Constants.OIConstants.driverControllerPort);
   XboxController operatorController = new XboxController(Constants.OIConstants.operatorControllerPort);
   Joystick controller = new Joystick(Constants.OIConstants.driverControllerPort);
@@ -90,8 +93,8 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-      driverA_Button.whenPressed(new Spin(colorSubsystem, 3));
-
+        driverA_Button.whenPressed(new Spin(colorSubsystem, 3));
+        driverB_Button.whenPressed(new VisionCommand(visionSubsystem, robotDrive));
 
   }
 
