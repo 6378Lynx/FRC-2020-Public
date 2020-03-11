@@ -1,15 +1,18 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Spark;
+import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 
 public class ShooterSubsystem extends SubsystemBase {
 
-    private Spark rotationMotor = new Spark(Constants.ShooterConstants.rotationMotorPort);
-    private Spark shooterMotor =  new Spark(Constants.ShooterConstants.shooterMotorPort);
+    private WPI_TalonSRX rotationMotor = new WPI_TalonSRX(Constants.ShooterConstants.rotationMotorPort);
+    private WPI_VictorSPX shooterMotor =  new WPI_VictorSPX(Constants.ShooterConstants.shooterMotorPort);
     private DigitalInput lowerLimitSwitch = new DigitalInput(Constants.ShooterConstants.lowerLimitSwitchPort);
     private DigitalInput upperLimitSwitch = new DigitalInput(Constants.ShooterConstants.upperLimitSwitchPort);
 
@@ -21,18 +24,18 @@ public class ShooterSubsystem extends SubsystemBase {
 
 
     public void outtake(){
-        shooterMotor.set(1);
-    }
-
-    public void intake(){
         shooterMotor.set(-1);
     }
 
+    public void intake(){
+        shooterMotor.set(1);
+    }
+
     public void raiseShooter() {
-        rotationMotor.set(0.8);
+        rotationMotor.set(0.5);
     }
     public void lowerShooter(){
-        rotationMotor.set(-0.8);
+        rotationMotor.set(-0.5);
     }
 
     public void stopRotation(){

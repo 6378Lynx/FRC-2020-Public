@@ -20,26 +20,38 @@ import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
 public final class Constants {
 
     public static final class DriveConstants{
-        public static final int leftMotor1Port = 0;
-        public static final int leftMotor2Port = 0;
+        public static final int leftMotor1Port = 3;
+        public static final int leftMotor2Port = 2;
 
         public static final int rightMotor1Port = 0;
-        public static final int rightMotor2Port = 0;
+        public static final int rightMotor2Port = 1;
+        public static final boolean rightEncoderReversed = false;
 
-        public static final int leftEncoderPort = 0;
-        public static final int rightEncoderPort = 0;
+
+        public static final int leftEncoderPortA = 0;
+        public static final int leftEncoderPortB = 1;
+        public static final boolean leftEncoderReversed = false;
+
+
+        public static final int rightEncoderPortA = 2;
+        public static final int rightEncoderPortB = 3;
 
         public static final int gyroPort = 0;
 
-        public static final int trackWidth = 0;
+        public static final double trackWidth = 0.495;
 
-        public static final boolean gyroReversed = false;
+        public static final boolean gyroReversed = true;
 
-        public static final double kS = 0;
-        public static final double kV = 0;
-        public static final double kA = 0;
+        public static final double kS = 0.57;
+        public static final double kV = 3.14;
+        public static final double kA = 0.513;
 
-        public static final double kPDrive = 0.0;
+        public static final double kPVel = 1.3;
+
+        public static final double encoderCPR = 2048;
+        public static final double wheelDiameterMeters = 0.1524;
+        public static double encoderDistPerPulse = (wheelDiameterMeters * Math.PI)/ (double) encoderCPR;
+
 
         public static final DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics(trackWidth);
 
@@ -47,7 +59,7 @@ public final class Constants {
 
     public static final class OIConstants{
         public static final int driverControllerPort = 0;
-        public static final int operatorControllerPort = 0;
+        public static final int operatorControllerPort = 1;
 
         static final int DRIVER_A_Button = 2;
         static final int DRIVER_B_Button = 3;
@@ -71,24 +83,27 @@ public final class Constants {
     }
 
     public static final class AutoConstants{
-        public static final double maxVel = 0;
-        public static final double maxAccel = 0;
+        public static final double maxVel = 1;
+        public static final double maxAccel = 1;
+
+        public static final double ramseteB = 2;
+        public static final double ramseteZeta = 0.7;
     }
 
     public static final class ShooterConstants{
-        public static final int lowerLimitSwitchPort = 0;
-        public static final int upperLimitSwitchPort = 1;
+        public static final int lowerLimitSwitchPort = 6;
+        public static final int upperLimitSwitchPort = 7;
 
-        public static final int shooterMotorPort = 0;
-        public static final int rotationMotorPort = 1;
+        public static final int shooterMotorPort = 5;
+        public static final int rotationMotorPort = 4;
 
     }
 
     public static final class ControlConstants{
-        public static final int raiseMotorPort = 0;
-        public static final int turnMotorPort = 0;
-        public static int topLimitSwitchPort = 0;
-        public static int bottomLimitSwitchPort = 0;
+        public static final int raiseMotorPort = 6;
+        public static final int turnMotorPort = 7;
+        public static int topLimitSwitchPort = 4;
+        public static int bottomLimitSwitchPort = 5;
     }
 
 }
