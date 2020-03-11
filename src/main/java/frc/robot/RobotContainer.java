@@ -46,16 +46,14 @@ public class RobotContainer {
     // Configure the button bindings
     configureButtonBindings();
 
-    /*
-    robotDrive.setDefaultCommand(
+    
+    /*robotDrive.setDefaultCommand(
             new RunCommand(
-                    () -> robotDrive.arcadeDrive(controller.getY(GenericHID.Hand.kLeft), controller.getX(GenericHID.Hand.kRight)),
-                    robotDrive
-            )
-    );
+                    () -> robotDrive.arcadeDrive(controller.getY(GenericHID.Hand.kLeft), controller.getX(GenericHID.Hand.kRight),
+                    robotDrive)));
 
-    */
-
+    
+      */
   }
 
   /**
@@ -66,6 +64,7 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     aButton.whenPressed(new VisionCommand(new VisionSubsystem()));
+    
 
   }
 

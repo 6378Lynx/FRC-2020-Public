@@ -7,10 +7,17 @@
 
 package frc.robot;
 
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.VisionCommand;
+import frc.robot.subsystems.VisionSubsystem;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -20,9 +27,27 @@ import frc.robot.commands.VisionCommand;
  */
 public class Robot extends TimedRobot {
   //private Command m_autonomousCommand;
-  private Command m_visionCommand;
+  private Command m_visionCommand;  public Joystick joystick;
+ 
+  
+  double[] defaultValue = new double[3];
+  private NetworkTableInstance table;
+  private NetworkTable cameraTable;
+  public NetworkTableEntry isDriverMode;
+  private String cameraName = "Logitech";
+  double curr_X_Distance;
+  double curr_angle_offset;
+  double distance;
+  double area_at_1_meter = 145.15;
+  double currArea;
+
+  double camera_distance = 0.5; //m
+  double hypot_offset = 0.0;
+  double latency;
 
   private RobotContainer m_robotContainer;
+  private Solenoid solenoid = new Solenoid(0);
+
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -33,6 +58,10 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
+    joystick = new Joystick(1);
+    table = NetworkTableInstance.getDefault();
+    cameraTable = table.getTable("chameleon-vision").getSubTable(cameraName);
+    isDriverMode = cameraTable.getEntry("driver_mode");
   }
 
   /**
@@ -74,6 +103,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousPeriodic() {
+    //if(joyst)
+
   }
 
   @Override
@@ -82,7 +113,6 @@ public class Robot extends TimedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
-
     // schedule the autonomous command (example)
     if (m_visionCommand != null) {
       m_visionCommand.schedule();
@@ -94,6 +124,17 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
+    solenoid.set(true);
+    if(joystick.getRawButton(2)){
+      latency = cameraTable.getEntry("latency").getDouble(0.0);
+      curr_angle_offset = cameraTable.getEntry("targetYaw").getDouble(0.0);
+      currArea = cameraTable.getEntry("targetFittedWidth").getDouble(0.0); 
+      distance = 1 / (currArea * (double)(1 / (area_at_1_meter)  )  );
+      //System.out.println(curr_X_Distance);
+      SmartDashboard.putNumber("X offset", distance);
+      SmartDashboard.putNumber("Angle offset", curr_angle_offset);
+      SmartDashboard.putNumber("Latency ", latency);
+    }
   }
 
   @Override

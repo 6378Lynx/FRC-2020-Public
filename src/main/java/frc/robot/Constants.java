@@ -24,12 +24,12 @@ public final class Constants {
         public static final int rightMotor1Port = 2;
         public static final int rightMotor2Port = 3;
 
-        public static final int leftEncoderPort = 4;
-        public static final int rightEncoderPort = 5;
+        public static final int leftEncoderPort = 6;
+        public static final int rightEncoderPort = 9;
 
         public static final int gyroPort = 6;
 
-        public static final int trackWidth = 7;
+        public static final int trackWidth = 1;
 
         public static final boolean gyroReversed = false;
     }
